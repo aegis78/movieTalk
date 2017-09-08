@@ -28,8 +28,7 @@ $ ionic cordova rm android
 $ ionic cordova add android
 $ ionic cordova rm ios
 $ ionic cordova add ios
-$ sudo npm install -g ios-sim@latest (ios emulate not run)
-
+$ cd platforms/ios/cordova && npm install ios-sim@latest (ios emulate not run)
 
 ```
 
