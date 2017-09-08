@@ -23,5 +23,13 @@ $ ionic cordova run ios
 ```
 
 Substitute ios for android if not on a Mac.
+```bash
+$ ionic cordova rm android
+$ ionic cordova add android
+$ ionic cordova rm ios
+$ ionic cordova add ios
+$ sudo npm install -g ios-sim@latest (ios emulate not run)
 
+
+```
 
