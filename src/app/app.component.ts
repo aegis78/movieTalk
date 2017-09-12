@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 
+import { GooglePlus } from '@ionic-native/google-plus';
 import firebase from 'firebase';
 
 @Component({
@@ -14,32 +15,16 @@ import firebase from 'firebase';
 export class MyApp {
     rootPage:any;
 
-    constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+    constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, googlePlus: GooglePlus) {
         
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyBqAEgi6HSIpHwDsndcPis41LVuFUBarX4",
-            authDomain: "movietalk-56761.firebaseapp.com",
-            databaseURL: "https://movietalk-56761.firebaseio.com",
-            projectId: "movietalk-56761",
-            storageBucket: "movietalk-56761.appspot.com",
-            messagingSenderId: "679912936973"
-        };        
-        firebase.initializeApp(config);
-        // End Firebase
         firebase.auth().onAuthStateChanged((user) => {
 
-
             if (!user) {
-
-                console.log("not login");
+                console.log("App.Componets === : not login");
                 this.rootPage = LoginPage;
-
-
             } else {
-                console.log("login");
+                console.log("App.Componets === : login");                
                 this.rootPage = TabsPage;
-
             }
 
         });

@@ -24,6 +24,18 @@
         },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "io.ionic.starter"
+        },
+        "cordova-plugin-googleplus": {
+            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.679912936973-j6n9iohnqpesvobqrkm0kko4e3udn87b",
+            "PACKAGE_NAME": "io.ionic.starter"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "co.kr.madcloud.movietalk"
+        },
+        "cordova-plugin-facebook4": {
+            "APP_ID": "1508517392572807",
+            "APP_NAME": "movieTalk",
+            "PACKAGE_NAME": "co.kr.madcloud.movietalk"
         }
     },
     "dependent_plugins": {}

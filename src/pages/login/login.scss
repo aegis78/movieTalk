@@ -5,7 +5,7 @@ page-login {
     
     .scroll-content {
         align-content: center;
-        display: flex;
+        display: fixed;
         flex-direction: column;
         justify-content: center;
         text-align: center;
@@ -16,6 +16,7 @@ page-login {
     }
     
     ion-card.card {
+        margin-top: 100px;
         box-shadow: none;
         background: rgba(0, 0, 0, 0.2);
         border-radius: 5px;
@@ -70,7 +71,7 @@ page-login {
     }
     
     .bottom {
-        position: absolute;
+        position: fixed;
         bottom: 0;
         
     }

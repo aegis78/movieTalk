@@ -30059,10 +30059,7 @@ page-login .scroll-content {
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
   align-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  display: fixed;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
@@ -30080,6 +30077,7 @@ page-login .button {
 }
 
 page-login ion-card.card {
+  margin-top: 100px;
   -webkit-box-shadow: none;
   box-shadow: none;
   background: rgba(0, 0, 0, 0.2);
@@ -30129,6 +30127,6 @@ page-login .icon {
 }
 
 page-login .bottom {
-  position: absolute;
+  position: fixed;
   bottom: 0;
 }
