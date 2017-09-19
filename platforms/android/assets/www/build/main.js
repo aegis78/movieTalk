@@ -31,7 +31,7 @@ var TabsPage = (function () {
     return TabsPage;
 }());
 TabsPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"C:\developer\project\brackets\movieTalk\src\pages\tabs\tabs.html"*/'<ion-tabs>\n  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"C:\developer\project\brackets\movieTalk\src\pages\tabs\tabs.html"*/
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"D:\developer\project\movieTalk\src\pages\tabs\tabs.html"*/'<ion-tabs>\n\n  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>\n\n  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>\n\n  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>\n\n</ion-tabs>\n\n'/*ion-inline-end:"D:\developer\project\movieTalk\src\pages\tabs\tabs.html"*/
     }),
     __metadata("design:paramtypes", [])
 ], TabsPage);
@@ -75,11 +75,11 @@ var RegisterPage = (function () {
     return RegisterPage;
 }());
 RegisterPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPage */])(),
+    Object(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPage */])(),
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-register',template:/*ion-inline-start:"C:\developer\project\brackets\movieTalk\src\pages\register\register.html"*/'<!--\n  Generated template for the RegisterPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>register</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"C:\developer\project\brackets\movieTalk\src\pages\register\register.html"*/,
+        selector: 'page-register',template:/*ion-inline-start:"D:\developer\project\movieTalk\src\pages\register\register.html"*/'<!--\n\n  Generated template for the RegisterPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n  <ion-navbar>\n\n    <ion-title>register</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"D:\developer\project\movieTalk\src\pages\register\register.html"*/,
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
 ], RegisterPage);
 
 //# sourceMappingURL=register.js.map
@@ -120,11 +120,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * on Ionic pages and navigation.
  */
 var LoginPage = (function () {
-    function LoginPage(navCtrl, navParams, loginService, toastCtrl) {
+    function LoginPage(navCtrl, navParams, loginService, toastCtrl, alertCtrl, loadingCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.loginService = loginService;
         this.toastCtrl = toastCtrl;
+        this.alertCtrl = alertCtrl;
+        this.loadingCtrl = loadingCtrl;
     }
     LoginPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad LoginPage');
@@ -161,14 +163,93 @@ var LoginPage = (function () {
             this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_3__pages_tabs_tabs__["a" /* TabsPage */]);
         }
     };
+    LoginPage.prototype.showForgotPassword = function () {
+        var _this = this;
+        var prompt = this.alertCtrl.create({
+            title: 'Enter Your Email',
+            message: "가입하신 email로 새로운 비밀번호를 보내드립니다.",
+            inputs: [
+                {
+                    name: 'recoverEmail',
+                    placeholder: 'you@example.com'
+                },
+            ],
+            buttons: [
+                {
+                    text: 'Cancel',
+                    handler: function (data) {
+                        console.log('Cancel clicked');
+                    }
+                },
+                {
+                    text: 'Submit',
+                    handler: function (data) {
+                        //add preloader
+                        var loading = _this.loadingCtrl.create({
+                            dismissOnPageChange: true,
+                            content: 'Reseting your password..'
+                        });
+                        loading.present();
+                        //call usersservice
+                        _this.loginService.forgotPasswordUser(data.recoverEmail).then(function () {
+                            //add toast
+                            loading.dismiss().then(function () {
+                                //show pop up
+                                var alert = _this.alertCtrl.create({
+                                    title: 'Check your email',
+                                    subTitle: 'Password reset successful',
+                                    buttons: ['OK']
+                                });
+                                alert.present();
+                            });
+                        }, function (error) {
+                            //show pop up
+                            loading.dismiss().then(function () {
+                                var alert = _this.alertCtrl.create({
+                                    title: 'Error resetting password',
+                                    subTitle: error.message,
+                                    buttons: ['OK']
+                                });
+                                alert.present();
+                            });
+                        });
+                    }
+                }
+            ]
+        });
+        prompt.present();
+    };
+    LoginPage.prototype.emailPasswordAuth = function () {
+        var _this = this;
+        var loading = this.loadingCtrl.create({
+            dismissOnPageChange: true
+        });
+        loading.present();
+        this.loginService.emailPasswordAuth(this.emailField, this.passField).then(function () {
+            var toast = _this.toastCtrl.create({
+                message: 'Login Successful',
+                duration: 3000
+            });
+            toast.present();
+        }).catch(function (error) {
+            var alert = _this.alertCtrl.create({
+                title: 'Login Fail',
+                subTitle: error.message,
+                buttons: ['OK']
+            });
+            alert.present();
+        });
+        loading.dismiss();
+    };
     return LoginPage;
 }());
 LoginPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPage */])(),
+    Object(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPage */])(),
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-login',template:/*ion-inline-start:"C:\developer\project\brackets\movieTalk\src\pages\login\login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n\n<style>\n    ion-content {\n        background: url(\'images/background/bg.jpg\') center / cover;\n    }\n</style>\n\n<ion-content> \n    <ion-card>\n        <ion-card-header>\n            로그인\n        </ion-card-header>\n        <ion-card-content>\n            <ion-list no-line>\n                <ion-item>\n                    <ion-input input="email" placeholder="Email"></ion-input>\n                </ion-item>\n                <ion-item>\n                    <ion-input input="password" placeholder="Password"></ion-input>\n                </ion-item>\n                <a>비밀번호를 잃어 버리셨다면 <b>여기로....</b></a>\n                <button ion-button block outline color="light">로그인</button>\n                <p>OR</p>\n                <button ion-button block color="google" (click)=\'googleLogin()\'>\n                    <ion-icon name="logo-googleplus"></ion-icon> Login with Google\n                </button> \n                <button ion-button block color="facebook" (click)=\'facebookLogin()\'>\n                    <ion-icon name="logo-facebook"></ion-icon> Login with facebook\n                </button>                \n            </ion-list>\n        </ion-card-content> \n    </ion-card>\n    <button class="bottom" ion-button full>회원 가입</button>\n\n</ion-content>'/*ion-inline-end:"C:\developer\project\brackets\movieTalk\src\pages\login\login.html"*/,
+        selector: 'page-login',template:/*ion-inline-start:"D:\developer\project\movieTalk\src\pages\login\login.html"*/'<!--\n\n  Generated template for the LoginPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n\n\n<style>\n\n    ion-content {\n\n        background: url(\'images/background/bg.jpg\') center / cover;\n\n    }\n\n</style>\n\n\n\n<ion-content> \n\n    <ion-card>\n\n        <ion-card-header>\n\n            로그인\n\n        </ion-card-header>\n\n        <ion-card-content>\n\n            <ion-list no-line>\n\n                <ion-item>\n\n                    <ion-input input="email" type="email" placeholder="Email" [(ngModel)]="emailField"></ion-input>\n\n                </ion-item>\n\n                <ion-item>\n\n                    <ion-input input="password" type="password" placeholder="Password" [(ngModel)]="passField"></ion-input>\n\n                </ion-item>\n\n                <a (click)="showForgotPassword()">비밀번호를 잃어 버리셨다면 <b>여기로....</b></a>\n\n                <button ion-button block outline color="light" (click)="emailPasswordAuth()">로그인</button>\n\n                <p>OR</p>\n\n                <button ion-button block color="google" (click)=\'googleLogin()\'>\n\n                    <ion-icon name="logo-googleplus"></ion-icon> Login with Google\n\n                </button> \n\n                <button ion-button block color="facebook" (click)=\'facebookLogin()\'>\n\n                    <ion-icon name="logo-facebook"></ion-icon> Login with facebook\n\n                </button>                \n\n            </ion-list>\n\n        </ion-card-content> \n\n    </ion-card>\n\n    <button class="bottom" ion-button full>회원 가입</button>\n\n\n\n</ion-content>'/*ion-inline-end:"D:\developer\project\movieTalk\src\pages\login\login.html"*/,
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_login_service_login_service__["a" /* LoginServiceProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_login_service_login_service__["a" /* LoginServiceProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]])
 ], LoginPage);
 
 //# sourceMappingURL=login.js.map
@@ -292,6 +373,12 @@ var LoginServiceProvider = (function () {
         }
         return result;
     };
+    LoginServiceProvider.prototype.forgotPasswordUser = function (email) {
+        return __WEBPACK_IMPORTED_MODULE_5_firebase___default.a.auth().sendPasswordResetEmail(email);
+    };
+    LoginServiceProvider.prototype.emailPasswordAuth = function (email, password) {
+        return __WEBPACK_IMPORTED_MODULE_5_firebase___default.a.auth().signInWithEmailAndPassword(email, password);
+    };
     return LoginServiceProvider;
 }());
 LoginServiceProvider = __decorate([
@@ -329,9 +416,9 @@ var AboutPage = (function () {
 }());
 AboutPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-about',template:/*ion-inline-start:"C:\developer\project\brackets\movieTalk\src\pages\about\about.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      About\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"C:\developer\project\brackets\movieTalk\src\pages\about\about.html"*/
+        selector: 'page-about',template:/*ion-inline-start:"D:\developer\project\movieTalk\src\pages\about\about.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      About\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"D:\developer\project\movieTalk\src\pages\about\about.html"*/
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]])
 ], AboutPage);
 
 //# sourceMappingURL=about.js.map
@@ -364,9 +451,9 @@ var ContactPage = (function () {
 }());
 ContactPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-contact',template:/*ion-inline-start:"C:\developer\project\brackets\movieTalk\src\pages\contact\contact.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Contact\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n    <ion-item>\n      <ion-icon name="ionic" item-left></ion-icon>\n      @ionicframework\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"C:\developer\project\brackets\movieTalk\src\pages\contact\contact.html"*/
+        selector: 'page-contact',template:/*ion-inline-start:"D:\developer\project\movieTalk\src\pages\contact\contact.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Contact\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n  <ion-list>\n\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n\n    <ion-item>\n\n      <ion-icon name="ionic" item-left></ion-icon>\n\n      @ionicframework\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"D:\developer\project\movieTalk\src\pages\contact\contact.html"*/
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]])
 ], ContactPage);
 
 //# sourceMappingURL=contact.js.map
@@ -399,9 +486,9 @@ var HomePage = (function () {
 }());
 HomePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-home',template:/*ion-inline-start:"C:\developer\project\brackets\movieTalk\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Home</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <h2>Welcome to Ionic!</h2>\n  <p>\n    This starter project comes with simple tabs-based layout for apps\n    that are going to primarily use a Tabbed UI.\n  </p>\n  <p>\n    Take a look at the <code>src/pages/</code> directory to add or change tabs,\n    update any existing page or create new pages.\n  </p>\n</ion-content>\n'/*ion-inline-end:"C:\developer\project\brackets\movieTalk\src\pages\home\home.html"*/
+        selector: 'page-home',template:/*ion-inline-start:"D:\developer\project\movieTalk\src\pages\home\home.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Home</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <h2>Welcome to Ionic!</h2>\n\n  <p>\n\n    This starter project comes with simple tabs-based layout for apps\n\n    that are going to primarily use a Tabbed UI.\n\n  </p>\n\n  <p>\n\n    Take a look at the <code>src/pages/</code> directory to add or change tabs,\n\n    update any existing page or create new pages.\n\n  </p>\n\n</ion-content>\n\n'/*ion-inline-end:"D:\developer\project\movieTalk\src\pages\home\home.html"*/
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]])
 ], HomePage);
 
 //# sourceMappingURL=home.js.map
@@ -498,7 +585,7 @@ AppModule = __decorate([
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* MyApp */], {}, {
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* MyApp */], {}, {
                 links: [
                     { loadChildren: '../pages/register/register.module#RegisterPageModule', name: 'RegisterPage', segment: 'register', priority: 'low', defaultHistory: [] },
                     { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] }
@@ -507,7 +594,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_4__angular_http__["b" /* HttpModule */],
             __WEBPACK_IMPORTED_MODULE_11_angularfire2__["a" /* AngularFireModule */].initializeApp(firebaseConfig)
         ],
-        bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["a" /* IonicApp */]],
+        bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicApp */]],
         entryComponents: [
             __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* MyApp */],
             __WEBPACK_IMPORTED_MODULE_5__pages_about_about__["a" /* AboutPage */],
@@ -520,7 +607,7 @@ AppModule = __decorate([
         providers: [
             __WEBPACK_IMPORTED_MODULE_15__ionic_native_status_bar__["a" /* StatusBar */],
             __WEBPACK_IMPORTED_MODULE_16__ionic_native_splash_screen__["a" /* SplashScreen */],
-            { provide: __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicErrorHandler */] },
+            { provide: __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicErrorHandler */] },
             __WEBPACK_IMPORTED_MODULE_17__providers_login_service_login_service__["a" /* LoginServiceProvider */],
             __WEBPACK_IMPORTED_MODULE_10__ionic_native_google_plus__["a" /* GooglePlus */],
             __WEBPACK_IMPORTED_MODULE_13__ionic_native_facebook__["a" /* Facebook */]
@@ -568,11 +655,11 @@ var MyApp = (function () {
         var _this = this;
         __WEBPACK_IMPORTED_MODULE_7_firebase___default.a.auth().onAuthStateChanged(function (user) {
             if (!user) {
-                console.log("not login");
+                console.log("App.Componets === : not login");
                 _this.rootPage = __WEBPACK_IMPORTED_MODULE_5__pages_login_login__["a" /* LoginPage */];
             }
             else {
-                console.log("login");
+                console.log("App.Componets === : login");
                 _this.rootPage = __WEBPACK_IMPORTED_MODULE_4__pages_tabs_tabs__["a" /* TabsPage */];
             }
         });
@@ -586,9 +673,9 @@ var MyApp = (function () {
     return MyApp;
 }());
 MyApp = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"C:\developer\project\brackets\movieTalk\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"C:\developer\project\brackets\movieTalk\src\app\app.html"*/
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"D:\developer\project\movieTalk\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n\n'/*ion-inline-end:"D:\developer\project\movieTalk\src\app\app.html"*/
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */], __WEBPACK_IMPORTED_MODULE_6__ionic_native_google_plus__["a" /* GooglePlus */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */], __WEBPACK_IMPORTED_MODULE_6__ionic_native_google_plus__["a" /* GooglePlus */]])
 ], MyApp);
 
 //# sourceMappingURL=app.component.js.map

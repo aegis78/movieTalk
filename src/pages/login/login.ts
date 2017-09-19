@@ -18,6 +18,9 @@ import firebase from 'firebase';
   templateUrl: 'login.html',
 })
 export class LoginPage {
+    
+    private emailField:any;
+    private passField:any;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private loginService: LoginServiceProvider, private toastCtrl: ToastController, private alertCtrl: AlertController
                 , private loadingCtrl: LoadingController) {
@@ -124,6 +127,30 @@ export class LoginPage {
             ]
         });
         prompt.present();
+    }
+    
+    emailPasswordAuth() {
+        let loading = this.loadingCtrl.create({
+            dismissOnPageChange: true            
+        });
+        loading.present();
+        
+        this.loginService.emailPasswordAuth(this.emailField, this.passField).then(()=>{
+            let toast = this.toastCtrl.create({
+                message: 'Login Successful',
+                duration: 3000                
+            });
+            toast.present();
+        }).catch(error=>{
+            let alert = this.alertCtrl.create({
+                title: 'Login Fail',
+                subTitle: error.message,
+                buttons: ['OK']
+            }); 
+            alert.present();
+        })
+        
+        loading.dismiss();
     }
     
 }

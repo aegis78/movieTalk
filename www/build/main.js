@@ -219,17 +219,39 @@ var LoginPage = (function () {
         });
         prompt.present();
     };
+    LoginPage.prototype.emailPasswordAuth = function () {
+        var _this = this;
+        var loading = this.loadingCtrl.create({
+            dismissOnPageChange: true
+        });
+        loading.present();
+        this.loginService.emailPasswordAuth(this.emailField, this.passField).then(function () {
+            var toast = _this.toastCtrl.create({
+                message: 'Login Successful',
+                duration: 3000
+            });
+            toast.present();
+        }).catch(function (error) {
+            var alert = _this.alertCtrl.create({
+                title: 'Login Fail',
+                subTitle: error.message,
+                buttons: ['OK']
+            });
+            alert.present();
+        });
+        loading.dismiss();
+    };
     return LoginPage;
 }());
 LoginPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPage */])(),
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-login',template:/*ion-inline-start:"D:\developer\project\movieTalk\src\pages\login\login.html"*/'<!--\n\n  Generated template for the LoginPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n\n\n<style>\n\n    ion-content {\n\n        background: url(\'images/background/bg.jpg\') center / cover;\n\n    }\n\n</style>\n\n\n\n<ion-content> \n\n    <ion-card>\n\n        <ion-card-header>\n\n            로그인\n\n        </ion-card-header>\n\n        <ion-card-content>\n\n            <ion-list no-line>\n\n                <ion-item>\n\n                    <ion-input input="email" type="email" placeholder="Email" [(ngModel)]="emailField"></ion-input>\n\n                </ion-item>\n\n                <ion-item>\n\n                    <ion-input input="password" type="password" placeholder="Password" [(ngModel)]="passField"></ion-input>\n\n                </ion-item>\n\n                <a (click)="showForgotPassword()">비밀번호를 잃어 버리셨다면 <b>여기로....</b></a>\n\n                <button ion-button block outline color="light">로그인</button>\n\n                <p>OR</p>\n\n                <button ion-button block color="google" (click)=\'googleLogin()\'>\n\n                    <ion-icon name="logo-googleplus"></ion-icon> Login with Google\n\n                </button> \n\n                <button ion-button block color="facebook" (click)=\'facebookLogin()\'>\n\n                    <ion-icon name="logo-facebook"></ion-icon> Login with facebook\n\n                </button>                \n\n            </ion-list>\n\n        </ion-card-content> \n\n    </ion-card>\n\n    <button class="bottom" ion-button full>회원 가입</button>\n\n\n\n</ion-content>'/*ion-inline-end:"D:\developer\project\movieTalk\src\pages\login\login.html"*/,
+        selector: 'page-login',template:/*ion-inline-start:"D:\developer\project\movieTalk\src\pages\login\login.html"*/'<!--\n\n  Generated template for the LoginPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n\n\n<style>\n\n    ion-content {\n\n        background: url(\'images/background/bg.jpg\') center / cover;\n\n    }\n\n</style>\n\n\n\n<ion-content> \n\n    <ion-card>\n\n        <ion-card-header>\n\n            로그인\n\n        </ion-card-header>\n\n        <ion-card-content>\n\n            <ion-list no-line>\n\n                <ion-item>\n\n                    <ion-input input="email" type="email" placeholder="Email" [(ngModel)]="emailField"></ion-input>\n\n                </ion-item>\n\n                <ion-item>\n\n                    <ion-input input="password" type="password" placeholder="Password" [(ngModel)]="passField"></ion-input>\n\n                </ion-item>\n\n                <a (click)="showForgotPassword()">비밀번호를 잃어 버리셨다면 <b>여기로....</b></a>\n\n                <button ion-button block outline color="light" (click)="emailPasswordAuth()">로그인</button>\n\n                <p>OR</p>\n\n                <button ion-button block color="google" (click)=\'googleLogin()\'>\n\n                    <ion-icon name="logo-googleplus"></ion-icon> Login with Google\n\n                </button> \n\n                <button ion-button block color="facebook" (click)=\'facebookLogin()\'>\n\n                    <ion-icon name="logo-facebook"></ion-icon> Login with facebook\n\n                </button>                \n\n            </ion-list>\n\n        </ion-card-content> \n\n    </ion-card>\n\n    <button class="bottom" ion-button full>회원 가입</button>\n\n\n\n</ion-content>'/*ion-inline-end:"D:\developer\project\movieTalk\src\pages\login\login.html"*/,
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_login_service_login_service__["a" /* LoginServiceProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_login_service_login_service__["a" /* LoginServiceProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _f || Object])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_login_service_login_service__["a" /* LoginServiceProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]])
 ], LoginPage);
 
-var _a, _b, _c, _d, _e, _f;
 //# sourceMappingURL=login.js.map
 
 /***/ }),
@@ -353,6 +375,9 @@ var LoginServiceProvider = (function () {
     };
     LoginServiceProvider.prototype.forgotPasswordUser = function (email) {
         return __WEBPACK_IMPORTED_MODULE_5_firebase___default.a.auth().sendPasswordResetEmail(email);
+    };
+    LoginServiceProvider.prototype.emailPasswordAuth = function (email, password) {
+        return __WEBPACK_IMPORTED_MODULE_5_firebase___default.a.auth().signInWithEmailAndPassword(email, password);
     };
     return LoginServiceProvider;
 }());

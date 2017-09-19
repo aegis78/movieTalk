@@ -13,12 +13,6 @@
         "cordova-plugin-device": {
             "PACKAGE_NAME": "co.kr.madcloud.movietalk"
         },
-        "cordova-plugin-googleplus": {
-            "PACKAGE_NAME": "co.kr.madcloud.movietalk"
-        },
-        "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "co.kr.madcloud.movietalk"
-        },
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "co.kr.madcloud.movietalk"
         },
@@ -34,6 +28,12 @@
         "cordova-plugin-facebook4": {
             "APP_ID": "1508517392572807",
             "APP_NAME": "movieTalk",
+            "PACKAGE_NAME": "co.kr.madcloud.movietalk"
+        },
+        "cordova-plugin-googleplus": {
+            "PACKAGE_NAME": "co.kr.madcloud.movietalk"
+        },
+        "cordova-plugin-network-information": {
             "PACKAGE_NAME": "co.kr.madcloud.movietalk"
         }
     },

@@ -72,6 +72,11 @@ export class LoginServiceProvider {
         return firebase.auth().sendPasswordResetEmail(email);
     }
     
+    emailPasswordAuth(email:any, password:any) {
+        return firebase.auth().signInWithEmailAndPassword(email, password);
+        
+    }
+    
     
     
     
