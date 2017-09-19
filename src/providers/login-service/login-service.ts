@@ -68,6 +68,10 @@ export class LoginServiceProvider {
         
     }
     
+    forgotPasswordUser(email: any){
+        return firebase.auth().sendPasswordResetEmail(email);
+    }
+    
     
     
     

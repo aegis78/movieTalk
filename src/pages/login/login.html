@@ -19,12 +19,12 @@
         <ion-card-content>
             <ion-list no-line>
                 <ion-item>
-                    <ion-input input="email" placeholder="Email"></ion-input>
+                    <ion-input input="email" type="email" placeholder="Email" [(ngModel)]="emailField"></ion-input>
                 </ion-item>
                 <ion-item>
-                    <ion-input input="password" placeholder="Password"></ion-input>
+                    <ion-input input="password" type="password" placeholder="Password" [(ngModel)]="passField"></ion-input>
                 </ion-item>
-                <a>비밀번호를 잃어 버리셨다면 <b>여기로....</b></a>
+                <a (click)="showForgotPassword()">비밀번호를 잃어 버리셨다면 <b>여기로....</b></a>
                 <button ion-button block outline color="light">로그인</button>
                 <p>OR</p>
                 <button ion-button block color="google" (click)='googleLogin()'>

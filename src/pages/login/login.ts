@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController, LoadingController } from 'ionic-angular';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import { TabsPage } from '../../pages/tabs/tabs';
 import { RegisterPage } from '../../pages/register/register';
@@ -19,7 +19,8 @@ import firebase from 'firebase';
 })
 export class LoginPage {
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private loginService: LoginServiceProvider, private toastCtrl: ToastController) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private loginService: LoginServiceProvider, private toastCtrl: ToastController, private alertCtrl: AlertController
+                , private loadingCtrl: LoadingController) {
     }
 
     ionViewDidLoad() {
@@ -62,6 +63,67 @@ export class LoginPage {
             this.navCtrl.setRoot(TabsPage);
             
         }
+    }
+    
+    showForgotPassword(){
+        let prompt = this.alertCtrl.create({
+            title: 'Enter Your Email',
+            message: "가입하신 email로 새로운 비밀번호를 보내드립니다.",
+            inputs: [
+                {
+                    name: 'recoverEmail',
+                    placeholder: 'you@example.com'
+                },
+            ],
+            buttons: [
+                {
+                    text: 'Cancel',
+                    handler: data => {
+                        console.log('Cancel clicked');
+                    }
+                },
+                {
+                    text: 'Submit',
+                    handler: data => {
+
+
+                        //add preloader
+                        let loading = this.loadingCtrl.create({
+                            dismissOnPageChange: true,
+                            content: 'Reseting your password..'
+                        });
+                        loading.present();
+                        //call usersservice
+                        this.loginService.forgotPasswordUser(data.recoverEmail).then(() => {
+                            //add toast
+                            loading.dismiss().then(() => {
+                                //show pop up
+                                let alert = this.alertCtrl.create({
+                                    title: 'Check your email',
+                                    subTitle: 'Password reset successful',
+                                    buttons: ['OK']
+                                });
+                                alert.present();
+                            })
+
+                        }, error => {
+                            //show pop up
+                            loading.dismiss().then(() => {
+                                let alert = this.alertCtrl.create({
+                                    title: 'Error resetting password',
+                                    subTitle: error.message,
+                                    buttons: ['OK']
+                                });
+                                alert.present();
+                            })
+
+
+                        });
+                    }
+                }
+            ]
+        });
+        prompt.present();
     }
     
 }
