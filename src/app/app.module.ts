@@ -7,7 +7,7 @@ import { HttpModule } from '@angular/http';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
+
 import { RegisterPage } from '../pages/register/register';
 
 import { GooglePlus } from '@ionic-native/google-plus';
@@ -17,7 +17,8 @@ import firebase from 'firebase';
 import { Facebook } from '@ionic-native/facebook';
 
 import { LoginPage } from '../pages/login/login';
-
+import { TabsPage } from '../pages/tabs/tabs';
+import { SuperTabsModule } from 'ionic2-super-tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginServiceProvider } from '../providers/login-service/login-service';
@@ -46,7 +47,9 @@ firebase.initializeApp(firebaseConfig)
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpModule,
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(firebaseConfig),
+    SuperTabsModule
+    
     
     
   ],

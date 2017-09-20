@@ -1,40 +1,43 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
 import { TabsPage } from '../pages/tabs/tabs';
+import { HomePage } from '../pages/home/home'; 
 import { LoginPage } from '../pages/login/login';
 
-import { GooglePlus } from '@ionic-native/google-plus';
 import firebase from 'firebase';
 
 @Component({
     templateUrl: 'app.html'
 })
 export class MyApp {
-    rootPage:any;
+    rootPage:any = HomePage;
 
-    constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, googlePlus: GooglePlus) {
+    constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, loadingCtrl: LoadingController) {
+        this.initializeApp();
+    }
+    
+    initializeApp() {
         
         firebase.auth().onAuthStateChanged((user) => {
 
-            if (!user) {
-                console.log("App.Componets === : not login");
-                this.rootPage = LoginPage;
-            } else {
-                console.log("App.Componets === : login");                
+            if (user) {
+                console.log("App.Componets === : login");
                 this.rootPage = TabsPage;
+            } else {
+                console.log("App.Componets === : not login");                
+                this.rootPage = LoginPage;
             }
-
         });
         
-
-        platform.ready().then(() => {
+        this.platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
-            statusBar.styleDefault();
-            splashScreen.hide();
+            this.statusBar.styleDefault();
+            this.splashScreen.hide();
         });
+        
     }
 }
+
